@@ -2,5 +2,5 @@
     <string name="app_name">Cafein</string>
     <string name="client_id">c1277a8e394747d6a636f10563b2f2d8</string>
     <string name="client_secret">73911e1eaf8a4d539d0ba017443d44fe</string>
-    <string name="aaa">aaa</string>
+    <string name="profile_picture">Profile Picture</string>
 </resources>
