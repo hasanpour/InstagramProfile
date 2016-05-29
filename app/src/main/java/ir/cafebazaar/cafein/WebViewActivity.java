@@ -1,5 +1,6 @@
 package ir.cafebazaar.cafein;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,13 +11,12 @@ import android.webkit.WebViewClient;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
+
+import ir.cafebazaar.cafein.util.Util;
 
 public class WebViewActivity extends AppCompatActivity {
 
@@ -24,15 +24,15 @@ public class WebViewActivity extends AppCompatActivity {
     private final String AUTHURL = "https://api.instagram.com/oauth/authorize/";
     private final String TOKENURL = "https://api.instagram.com/oauth/access_token";
     private final String CALLBACKURL = "cafein://connect";
-    private final String APIURL = "https://api.instagram.com/v1/users/self/";
-
-    private String accessToken;
+    private Util util;
     //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
+
+        util = new Util();
 
         String authURLString = AUTHURL +
                 "?client_id=" + getString(R.string.client_id) +
@@ -46,6 +46,12 @@ public class WebViewActivity extends AppCompatActivity {
             webView.setWebViewClient(new AuthWebView());
             webView.loadUrl(authURLString);
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
     }
 
     /**
@@ -102,9 +108,9 @@ public class WebViewActivity extends AppCompatActivity {
                 outputStreamWriter.flush();
 
                 /* Get Response */
-                String jsonString = getString(httpsURLConnection);
+                String jsonString = util.getString(httpsURLConnection);
                 JSONObject jsonObject = (JSONObject) new JSONTokener(jsonString).nextValue();
-                accessToken = jsonObject.getString("access_token");
+                String accessToken = jsonObject.getString("access_token");
                 String id = jsonObject.getJSONObject("user").getString("id");
                 String username = jsonObject.getJSONObject("user").getString("username");
                 String name = jsonObject.getJSONObject("user").getString("full_name");
@@ -129,64 +135,9 @@ public class WebViewActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            new getDescription().execute(); // Get profile description
+            /* Start Profile Activity */
+            Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+            startActivity(intent);
         }
-    }
-
-    /* Get profile description */
-    public class getDescription extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            String tokenURLString = APIURL + "?access_token=" + accessToken;
-
-            try {
-
-                /* Setup connection */
-                URL url = new URL(tokenURLString);
-                HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
-
-                /* Get Response */
-                String jsonString = getString(httpsURLConnection);
-                JSONObject jsonObject = (JSONObject) new JSONTokener(jsonString).nextValue();
-                String description = jsonObject.getJSONObject("data").getString("bio");
-
-                /* Save Info to SharedPreferences */
-                SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
-                editor.putString("prf_description", description);
-                editor.apply();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            finish(); // Return to MainActivity
-        }
-    }
-
-    /**
-     * Get string from connection
-     * @param httpsURLConnection Connection
-     * @return a JSON string
-     * @throws IOException
-     */
-    private String getString(HttpsURLConnection httpsURLConnection) throws IOException {
-
-        StringBuilder stringBuilder = new StringBuilder();
-        String line;
-
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpsURLConnection.getInputStream()));
-        while ((line = bufferedReader.readLine()) != null)
-            stringBuilder.append(line).append("\n");
-        bufferedReader.close();
-
-        return stringBuilder.toString();
     }
 }
