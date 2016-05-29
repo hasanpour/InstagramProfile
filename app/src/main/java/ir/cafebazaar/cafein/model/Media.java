@@ -7,6 +7,7 @@ import java.util.Locale;
 public class Media {
 
     private String time;
+    private String imageURL;
     private String mediaURL;
     private String caption;
 
@@ -16,6 +17,14 @@ public class Media {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     public String getMediaURL() {

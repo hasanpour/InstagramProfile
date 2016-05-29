@@ -4,4 +4,7 @@
     <string name="client_secret">73911e1eaf8a4d539d0ba017443d44fe</string>
     <string name="profile_picture">Profile Picture</string>
     <string name="user_image">User Image</string>
+    <string name="log_in">Log in with Instagram</string>
+    <string name="log_in_desc">Log in to see your photos and videos</string>
+    <string name="logo">Logo</string>
 </resources>

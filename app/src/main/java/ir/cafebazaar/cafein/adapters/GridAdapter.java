@@ -38,7 +38,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Media image = mediaList.get(position);
-        Picasso.with(context).load(image.getMediaURL()).into(holder.imageViewImage); // Loading image using Picasso library
+        Picasso.with(context).load(image.getImageURL()).into(holder.imageViewImage); // Loading image using Picasso library
     }
 
     @Override

@@ -22,8 +22,10 @@ import ir.cafebazaar.cafein.model.Media;
  */
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> {
 
+    //region Private Members
     private List<Media> mediaList;
     private Context context;
+    //endregion
 
     public ListAdapter(Context context, List<Media> mediaList) {
         this.mediaList = mediaList;
@@ -66,7 +68,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         };
 
         holder.textViewDate.setText(image.getDate());
-        Picasso.with(context).load(image.getMediaURL()).transform(transformation).into(holder.imageViewImage);// Loading image using Picasso library
+        Picasso.with(context).load(image.getImageURL()).transform(transformation).into(holder.imageViewImage); // Loading image using Picasso library
         holder.textViewCaption.setText(image.getCaption());
     }
 

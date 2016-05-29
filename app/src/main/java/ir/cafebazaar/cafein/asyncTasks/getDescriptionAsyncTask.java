@@ -19,13 +19,14 @@ import ir.cafebazaar.cafein.util.Util;
  */
 public class GetDescriptionAsyncTask extends AsyncTask<Void, Void, String> {
 
+    //region Private Members
     private final String APIURL = "https://api.instagram.com/v1/users/self/";
     private final String ACCESSTOKEN = MainActivity.sharedPreferences.getString("prf_access_token", null);
-    // Using interface to refresh UI on result.
-    public DescriptionAsyncResponseInterface delegate = null;
-    //region Private Members
     private Util util = new Util();
     //endregion
+
+    // Using interface to refresh UI on result.
+    public DescriptionAsyncResponseInterface delegate = null;
 
     @Override
     protected String doInBackground(Void... voids) {

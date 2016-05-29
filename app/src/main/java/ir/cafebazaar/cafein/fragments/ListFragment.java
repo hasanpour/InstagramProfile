@@ -23,20 +23,19 @@ import javax.net.ssl.HttpsURLConnection;
 import ir.cafebazaar.cafein.MainActivity;
 import ir.cafebazaar.cafein.R;
 import ir.cafebazaar.cafein.adapters.ListAdapter;
-import ir.cafebazaar.cafein.interfaces.MediaAsyncResponseInterface;
 import ir.cafebazaar.cafein.model.Media;
 import ir.cafebazaar.cafein.util.DividerItemDecoration;
 import ir.cafebazaar.cafein.util.EndlessRecyclerOnScrollListener;
 import ir.cafebazaar.cafein.util.Util;
 
 
-public class ListFragment extends Fragment implements MediaAsyncResponseInterface {
+public class ListFragment extends Fragment {
 
-    private static String maxID = null; // Last image id in list
     //region Private Members
     private RecyclerView recyclerView;
     private ListAdapter listAdapter;
     private List<Media> mediaList = new ArrayList<Media>();
+    private static String maxID = null; // Last image id in list
     private boolean loaded = false; // true when get all images
     //endregion
 
@@ -47,7 +46,12 @@ public class ListFragment extends Fragment implements MediaAsyncResponseInterfac
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        maxID = null;
         new getMedia().execute();
     }
 
@@ -82,36 +86,14 @@ public class ListFragment extends Fragment implements MediaAsyncResponseInterfac
     }
 
     /**
-     * Refresh UI with images
-     *
-     * @param medias List of images
-     */
-    @Override
-    public void getMediaFinish(List<Media> medias) {
-        for (Media media :
-                medias) {
-            mediaList.add(media);
-        }
-        listAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        recyclerView.clearOnScrollListeners();
-    }
-
-    /**
      * Get user's media
      */
     public class getMedia extends AsyncTask<Void, Void, List<Media>> {
 
+        //region Private Members
         private final String APIURL = "https://api.instagram.com/v1/users/self/media/recent/";
         private final String ACCESSTOKEN = MainActivity.sharedPreferences.getString("prf_access_token", null);
         private final String COUNT = "5"; // Number of images that we get in each request
-        // Using interface to refresh UI on result.
-        public MediaAsyncResponseInterface delegate = null;
-        //region Private Members
         private Util util = new Util();
         //endregion
 
@@ -127,11 +109,11 @@ public class ListFragment extends Fragment implements MediaAsyncResponseInterfac
 
             try {
 
-            /* Setup connection */
+                /* Setup connection */
                 URL url = new URL(tokenURLString);
                 HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
 
-            /* Get Response */
+                /* Get Response */
                 String jsonString = util.getString(httpsURLConnection);
                 JSONObject jsonObject = (JSONObject) new JSONTokener(jsonString).nextValue();
                 try { // Handle end of the images!
@@ -155,7 +137,7 @@ public class ListFragment extends Fragment implements MediaAsyncResponseInterfac
                     // Add data to list
                     Media image = new Media();
                     image.setTime(time);
-                    image.setMediaURL(imageURL);
+                    image.setImageURL(imageURL);
                     image.setCaption(caption);
                     images.add(image);
                 }
@@ -176,5 +158,11 @@ public class ListFragment extends Fragment implements MediaAsyncResponseInterfac
                 }
             listAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        recyclerView.clearOnScrollListeners();
     }
 }

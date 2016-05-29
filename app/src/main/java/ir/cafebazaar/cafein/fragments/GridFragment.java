@@ -1,5 +1,8 @@
 package ir.cafebazaar.cafein.fragments;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,8 +17,10 @@ import java.util.List;
 import ir.cafebazaar.cafein.R;
 import ir.cafebazaar.cafein.adapters.GridAdapter;
 import ir.cafebazaar.cafein.asyncTasks.GetMediaAsyncTask;
+import ir.cafebazaar.cafein.interfaces.ClickListener;
 import ir.cafebazaar.cafein.interfaces.MediaAsyncResponseInterface;
 import ir.cafebazaar.cafein.model.Media;
+import ir.cafebazaar.cafein.util.RecyclerTouchListener;
 
 
 public class GridFragment extends Fragment implements MediaAsyncResponseInterface {
@@ -37,8 +42,8 @@ public class GridFragment extends Fragment implements MediaAsyncResponseInterfac
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         getMediaAsyncTask.delegate = this;
         getMediaAsyncTask.execute();
     }
@@ -58,6 +63,29 @@ public class GridFragment extends Fragment implements MediaAsyncResponseInterfac
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setHasFixedSize(true);
             recyclerView.setAdapter(gridAdapter);
+            // Show image and video on Instagram on click
+            recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getContext(), recyclerView, new ClickListener() {
+                @Override
+                public void onClick(View view, int position) {
+                    Media media = mediaList.get(position);
+                    String videoURL = media.getMediaURL();
+                    if (videoURL != null){
+                        Uri uri = Uri.parse(media.getMediaURL());
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        intent.setPackage("com.instagram.android");
+                        try {
+                            startActivity(intent);
+                        } catch (ActivityNotFoundException e) {
+                            startActivity(new Intent(Intent.ACTION_VIEW,
+                                    Uri.parse(media.getMediaURL())));
+                        }
+                    }
+                }
+
+                @Override
+                public void onLongClick(View view, int position) {
+                }
+            }));
         }
 
         return rootView;

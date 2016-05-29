@@ -18,7 +18,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 import ir.cafebazaar.cafein.util.Util;
 
-public class WebViewActivity extends AppCompatActivity {
+public class LogInActivity extends AppCompatActivity {
 
     //region Private Members
     private final String AUTHURL = "https://api.instagram.com/oauth/authorize/";
@@ -62,8 +62,6 @@ public class WebViewActivity extends AppCompatActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             if (url.startsWith(CALLBACKURL)) {
-
-                /* TODO: Handle errors. */
 
                 System.out.println(url);
                 String parts[] = url.split("=");
@@ -135,6 +133,7 @@ public class WebViewActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+
             /* Start Profile Activity */
             Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
             startActivity(intent);

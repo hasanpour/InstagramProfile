@@ -6,4 +6,5 @@
     <dimen name="space_medium">20dp</dimen>
     <dimen name="grid_margin">2dp</dimen>
     <dimen name="image_height">120dp</dimen>
+    <dimen name="button_padding">8dp</dimen>
 </resources>

@@ -23,13 +23,14 @@ import ir.cafebazaar.cafein.util.Util;
  */
 public class GetMediaAsyncTask extends AsyncTask<Void, Void, List<Media>> {
 
+    //region Private Members
     private final String APIURL = "https://api.instagram.com/v1/users/self/media/recent/";
     private final String ACCESSTOKEN = MainActivity.sharedPreferences.getString("prf_access_token", null);
-    // Using interface to refresh UI on result.
-    public MediaAsyncResponseInterface delegate = null;
-    //region Private Members
     private Util util = new Util();
     //endregion
+
+    // Using interface to refresh UI on result.
+    public MediaAsyncResponseInterface delegate = null;
 
     @Override
     protected List<Media> doInBackground(Void... voids) {
@@ -50,9 +51,10 @@ public class GetMediaAsyncTask extends AsyncTask<Void, Void, List<Media>> {
             JSONArray jsonArray = jsonObject.getJSONArray("data");
             // Iterate through the elements of the array i
             for(int i = 0; i < jsonArray.length(); i++) {
-                String caption=null;
+                String caption = null;
                 String time = jsonArray.getJSONObject(i).getString("created_time");
                 String imageURL = jsonArray.getJSONObject(i).getJSONObject("images").getJSONObject("standard_resolution").getString("url");
+                String mediaURL = jsonArray.getJSONObject(i).getString("link");
                 try{ // Handle null caption!
                     caption = jsonArray.getJSONObject(i).getJSONObject("caption").getString("text");
                 } catch (JSONException e){
@@ -61,7 +63,8 @@ public class GetMediaAsyncTask extends AsyncTask<Void, Void, List<Media>> {
                 // Add data to list
                 Media image = new Media();
                 image.setTime(time);
-                image.setMediaURL(imageURL);
+                image.setImageURL(imageURL);
+                image.setMediaURL(mediaURL);
                 image.setCaption(caption);
                 images.add(image);
             }

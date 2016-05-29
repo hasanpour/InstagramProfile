@@ -4,29 +4,29 @@
               android:layout_height="wrap_content"
               android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textViewDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/row_padding"
-        android:paddingLeft="@dimen/row_padding"
-        android:paddingRight="@dimen/row_padding"
-        android:paddingTop="@dimen/row_padding"
-        android:textStyle="bold"/>
-
     <ImageView
         android:id="@+id/imageViewImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:contentDescription="@string/user_image"
-        android:src="@drawable/placeholder"/>
+        android:src="@drawable/placeholder"
+        android:paddingTop="@dimen/activity_horizontal_margin"/>
 
     <TextView
         android:id="@+id/textViewCaption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/row_padding"
         android:paddingLeft="@dimen/row_padding"
         android:paddingRight="@dimen/row_padding"
-        android:paddingTop="@dimen/row_padding"/>
+        android:paddingTop="@dimen/row_padding"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/textViewDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
+        android:paddingLeft="@dimen/row_padding"
+        android:paddingRight="@dimen/row_padding"
+        android:textSize="12sp"/>
 </LinearLayout>

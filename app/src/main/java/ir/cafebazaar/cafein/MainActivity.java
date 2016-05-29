@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,14 +19,8 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String accessToken = sharedPreferences.getString("prf_access_token", null);
 
-        /* Request Access Token if it didn't exist */
-        if (accessToken == null) {
-            Intent intent = new Intent(this, WebViewActivity.class);
-            startActivity(intent);
-        }
-
         /* Show Profile */
-        else {
+        if (accessToken != null) {
             Intent intent = new Intent(this, ProfileActivity.class);
             startActivity(intent);
         }
@@ -35,5 +30,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
         finish();
+    }
+
+    /* Request Access Token if it didn't exist */
+    public void openLogInActivity(View view) {
+        Intent intent = new Intent(this, LogInActivity.class);
+        startActivity(intent);
     }
 }
