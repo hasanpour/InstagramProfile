@@ -34,11 +34,6 @@ out/
 *.ipr
 *.iws
 
-# Package Files #
-*.jar
-*.war
-*.ear
-
 # User-specific stuff:
 /.idea/workspace.xml
 /.idea/tasks.xml
