@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Cafein.iml" filepath="$PROJECT_DIR$/Cafein.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Proin.iml" filepath="$PROJECT_DIR$/Proin.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
