@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="ir.cafebazaar.cafein.ProfileActivity">
+    tools:context="com.example.instagramprofile.ProfileActivity">
 
     <LinearLayout
         android:id="@+id/linearLayoutInfo"
@@ -64,7 +64,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/linearLayoutInfo"
-        android:layout_marginBottom="@dimen/row_padding"
+        android:layout_marginBottom="@dimen/list_padding"
         app:tabGravity="fill"
         app:tabMode="fixed"/>
 
